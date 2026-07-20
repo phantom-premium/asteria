@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_SERVER_URL = "server_url";
     private static final int REQ_PERMISSIONS = 1001;
     private static final int REQ_FILE_CHOOSER = 2001;
+    // Адрес вашего сервера по умолчанию — при первом запуске приложение
+    // подключается сюда само, без экрана ввода адреса. Сменить позже можно
+    // через меню (⋮ → «Сменить сервер»).
+    private static final String DEFAULT_SERVER_URL = "https://46.8.227.207:3443";
 
     private View setupLayout;
     private EditText serverUrlInput;
@@ -80,10 +84,14 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         String savedUrl = prefs.getString(KEY_SERVER_URL, null);
+        serverUrlInput.setText(DEFAULT_SERVER_URL);
         if (savedUrl != null) {
             showWebView(savedUrl);
         } else {
-            showSetupScreen();
+            // Первый запуск — сразу подключаемся к серверу по умолчанию, не
+            // заставляя человека вводить адрес вручную.
+            prefs.edit().putString(KEY_SERVER_URL, DEFAULT_SERVER_URL).apply();
+            showWebView(DEFAULT_SERVER_URL);
         }
     }
 
@@ -289,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.action_change_server) {
             getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove(KEY_SERVER_URL).apply();
             webView.loadUrl("about:blank");
-            serverUrlInput.setText("");
+            serverUrlInput.setText(DEFAULT_SERVER_URL);
             showSetupScreen();
             return true;
         }
