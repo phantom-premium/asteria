@@ -5,6 +5,10 @@ on:
     branches: [ main, master ]
   workflow_dispatch: {}
 
+defaults:
+  run:
+    working-directory: asteria-android
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: asteria-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: asteria-android/app/build/outputs/apk/debug/*.apk
