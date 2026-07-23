@@ -1,0 +1,8 @@
+{
+  "name": "asteria-messenger",
+  "version": "1.0.0",
+  "description": "Asteria — локальный мессенджер (без внешних зависимостей)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=22.5" }
+}
